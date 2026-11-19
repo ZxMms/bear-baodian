@@ -13,21 +13,19 @@ jobs:
           persist-credentials: false
       - name: Verify and unpack source locally
         run: |
-          echo '50efe9d63b43c1215fccc49d87cef1d38de53093cb5d428bf173f3003eeee2ef  bear-source-final.tar.xz' | shasum -a 256 -c -
+          echo '2ad7de3e91026e0f9eecc3730a5c796021326586c93e0b25fd108b244d44a3fe  bear-source-final.tar.xz' | shasum -a 256 -c -
           python3 - <<'PY'
           import tarfile
           from pathlib import PurePosixPath
           with tarfile.open('bear-source-final.tar.xz') as archive:
               members = archive.getmembers()
-              assert len(members) == 370
+              assert len(members) == 384
               for member in members:
                   path = PurePosixPath(member.name)
                   assert member.isfile() and not path.is_absolute()
                   assert not set(path.parts) & {'..', '.git', '.github'}
               archive.extractall('.', filter='data')
           PY
-      - name: Apply reviewed iOS build fixes
-        run: git apply --check ios-build-fixes.patch && git apply ios-build-fixes.patch
       - name: Install locked test dependencies
         run: npm ci --prefix tools/ui-test-runtime --ignore-scripts
       - name: Test and build iOS / SideStore IPA
