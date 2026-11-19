@@ -26,6 +26,8 @@ jobs:
                   assert not set(path.parts) & {'..', '.git', '.github'}
               archive.extractall('.', filter='data')
           PY
+      - name: Install locked test dependencies
+        run: npm ci --prefix tools/ui-test-runtime --ignore-scripts
       - name: Test and build iOS / SideStore IPA
         run: bash ios/scripts/ci_build.sh
       - name: Upload build products and test logs
