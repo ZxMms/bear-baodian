@@ -29,7 +29,11 @@ git apply ../ios-build-fixes.patch
 
 只有构建成功才会生成 BearBaodian-unsigned.ipa。下载对应运行的 Artifacts，解压后可把 IPA 导入 SideStore，使用自己的 Apple 账号签名安装。未签名 IPA 不能直接点击安装；本仓库不提供 Apple 账号、证书或 TestFlight 邀请。
 
-构建产物默认保留 14 天。当前以 Actions 的实际结果为准，尚未完成 iPhone 真机验收。SideStore 配置及续签说明：https://docs.sidestore.io/
+2026-11-19 已通过 [第 4 次云端构建](https://github.com/ZxMms/bear-baodian/actions/runs/44535364244)：Xcode 16.4 编译、11 项 JS 桥检查、7 项 XCTest 均通过，iPhone Release 归档成功。IPA 为 arm64 / iPhoneOS，版本 2.2.14 (1)，最低 iOS 16，大小 15,951,067 字节。
+
+构建产物默认保留 14 天；过期后可手动重新构建。尚未完成 iPhone 真机验收，定位、微信分享、后台提醒及 OCR 仍需在设备上测试。SideStore 配置及续签说明：https://docs.sidestore.io/
+
+压缩包内的迁移说明保留了初次制作时的验证记录；最新构建状态以本页和 Actions 结果为准。
 
 完整迁移说明见压缩包内 ios/README-iPhone.md；Android 更新与验收记录也保留在包内。
 
