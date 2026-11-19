@@ -20,3 +20,14 @@
      required init?(coder:NSCoder) { fatalError("Use init()") }
      override func viewDidLoad() {
          super.viewDidLoad()
+--- a/ios/scripts/ci_build.sh
++++ b/ios/scripts/ci_build.sh
+@@ -8,7 +8,7 @@
+ xcodebuild -resolvePackageDependencies -project BearCalendar.xcodeproj -scheme BearCalendar
+ # Pick an installed iPhone simulator instead of hard-coding an OS release.
+ device_id=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); phones=[v["udid"] for k,vs in d["devices"].items() if "iOS" in k for v in vs if "iPhone" in v["name"] and v.get("isAvailable")]; assert phones, "No iPhone simulator available"; print(phones[0])')
+-xcodebuild -project BearCalendar.xcodeproj -scheme BearCalendar -destination "platform=iOS Simulator,id=$device_id" -derivedDataPath build/DerivedData -resultBundlePath build/artifacts/BearCalendarTests.xcresult CODE_SIGNING_ALLOWED=NO test 2>&1 | tee build/artifacts/simulator-tests.log
++xcodebuild -project BearCalendar.xcodeproj -scheme BearCalendar -destination "platform=iOS Simulator,id=$device_id,arch=$(uname -m)" -derivedDataPath build/DerivedData -resultBundlePath build/artifacts/BearCalendarTests.xcresult CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=YES test 2>&1 | tee build/artifacts/simulator-tests.log
+ xcodebuild -project BearCalendar.xcodeproj -scheme BearCalendar -configuration Release -destination 'generic/platform=iOS' -archivePath build/BearCalendar-unsigned.xcarchive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive 2>&1 | tee build/artifacts/device-archive.log
+ ditto -c -k --sequesterRsrc --keepParent build/BearCalendar-unsigned.xcarchive build/artifacts/BearCalendar-unsigned.xcarchive.zip
+ mkdir -p build/sideload/Payload
