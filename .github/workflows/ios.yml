@@ -1,0 +1,38 @@
+name: iOS build and tests
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify and unpack source locally
+        run: |
+          echo '50efe9d63b43c1215fccc49d87cef1d38de53093cb5d428bf173f3003eeee2ef  bear-source-final.tar.xz' | shasum -a 256 -c -
+          python3 - <<'PY'
+          import tarfile
+          from pathlib import PurePosixPath
+          with tarfile.open('bear-source-final.tar.xz') as archive:
+              members = archive.getmembers()
+              assert len(members) == 370
+              for member in members:
+                  path = PurePosixPath(member.name)
+                  assert member.isfile() and not path.is_absolute()
+                  assert not set(path.parts) & {'..', '.git', '.github'}
+              archive.extractall('.', filter='data')
+          PY
+      - name: Test and build iOS / SideStore IPA
+        run: bash ios/scripts/ci_build.sh
+      - name: Upload build products and test logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: BearBaodian-iOS-${{ github.run_number }}
+          path: ios/build/artifacts/
+          retention-days: 14
+          if-no-files-found: warn
