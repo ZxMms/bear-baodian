@@ -1,0 +1,22 @@
+--- a/ios/BearCalendar/AppDelegate.swift
++++ b/ios/BearCalendar/AppDelegate.swift
+@@ -8,7 +8,7 @@
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+         UNUserNotificationCenter.current().delegate = self
+         window = UIWindow(frame: UIScreen.main.bounds)
+-        do { controller = try BearViewController(); window?.rootViewController = controller }
++        do { controller = BearViewController(store: try Store()); window?.rootViewController = controller }
+         catch {
+             let screen = UIViewController(); screen.view.backgroundColor = UIColor(red:1,green:0.98,blue:0.95,alpha:1)
+             let label = UILabel(); label.text = "熊熊宝典暂未能打开\n\(error.localizedDescription)\n请保留应用，避免删除本机记录。"; label.numberOfLines = 0; label.textAlignment = .center
+--- a/ios/BearCalendar/BearViewController.swift
++++ b/ios/BearCalendar/BearViewController.swift
+@@ -17,7 +17,7 @@
+     private var loaded = false
+     private var dark = false
+     override var preferredStatusBarStyle:UIStatusBarStyle { dark ? .lightContent : .darkContent }
+-    init() throws { store = try Store(); backup = Backup(store:store); super.init(nibName:nil,bundle:nil) }
++    init(store: Store) { self.store = store; backup = Backup(store:store); super.init(nibName:nil,bundle:nil) }
+     required init?(coder:NSCoder) { fatalError("Use init()") }
+     override func viewDidLoad() {
+         super.viewDidLoad()
