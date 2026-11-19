@@ -26,6 +26,8 @@ jobs:
                   assert not set(path.parts) & {'..', '.git', '.github'}
               archive.extractall('.', filter='data')
           PY
+      - name: Apply reviewed iOS build fixes
+        run: git apply --check ios-build-fixes.patch && git apply ios-build-fixes.patch
       - name: Install locked test dependencies
         run: npm ci --prefix tools/ui-test-runtime --ignore-scripts
       - name: Test and build iOS / SideStore IPA
