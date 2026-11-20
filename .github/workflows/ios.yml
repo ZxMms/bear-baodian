@@ -13,13 +13,13 @@ jobs:
           persist-credentials: false
       - name: Verify and unpack source locally
         run: |
-          echo '2ad7de3e91026e0f9eecc3730a5c796021326586c93e0b25fd108b244d44a3fe  bear-source-final.tar.xz' | shasum -a 256 -c -
+          echo '89f59f0f1759c40ffc97ae089e7189441e806afe646f1956e2bef1f8c7616560  bear-source-final.tar.xz' | shasum -a 256 -c -
           python3 - <<'PY'
           import tarfile
           from pathlib import PurePosixPath
           with tarfile.open('bear-source-final.tar.xz') as archive:
               members = archive.getmembers()
-              assert len(members) == 384
+              assert len(members) == 385
               for member in members:
                   path = PurePosixPath(member.name)
                   assert member.isfile() and not path.is_absolute()
@@ -38,3 +38,4 @@ jobs:
           path: ios/build/artifacts/
           retention-days: 14
           if-no-files-found: warn
+
