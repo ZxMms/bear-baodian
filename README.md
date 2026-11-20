@@ -2,7 +2,14 @@
 
 温暖轻快的本地生活记录 App，包含日历与农历、手账与心情、美食菜谱、冰箱与周菜单、收支图表、倒计时、天气和提醒。
 
-## Android v2.2.16 · 2026-11-20
+## Android v2.2.17 · 2026-11-20
+
+- 收支新增「买金小目标」：多个克重目标、购入记录、进度与剩余克重、累计实付和含工费的购入均价；支持品牌、工费与备注选填，目标可编辑、归档。
+- 可选择把购入同步支出账本，默认关闭。更新、重试和重新同步沿用同一账单 ID；购入与账单一起提交，避免重复记账。数据进入本机 SQLite 与完整备份。
+- 通过买金核心及完整界面流程、账本、照片分享、存储桥检查；Android build 37 编译和 90 个资源一致性验证通过，签名与 v2.2.16 相同。尚未在用户真机完成视觉验收，详情见源码中的 QA-2.2.17.md。
+- 本次不包含实时金价、市值或盈亏计算；iOS 共享源码已同步，尚未重新构建 IPA。
+
+## v2.2.16 功能保留 · 2026-11-20
 
 - 修复日期分享遗漏账单生活照片；每笔最多 5 张，分享页显示缩略图，可逐笔选择。
 - 支持只分享美食、购物照片，金额和备注单独勾选，交易截图凭证不分享。已有照片无需重新上传。
@@ -17,10 +24,10 @@
 
 ## 获取源码
 
-本仓库的完整 Android、iOS 与共享界面源码存放在 [bear-source-final.tar.xz](bear-source-final.tar.xz)，共 385 个文件。解压后即可查看各目录；已包含此前 iOS 构建修复，**无需再应用旧的 ios-build-fixes.patch**。
+本仓库的完整 Android、iOS 与共享界面源码存放在 [bear-source-final.tar.xz](bear-source-final.tar.xz)，共 394 个文件。解压后即可查看各目录；已包含此前 iOS 构建修复，**无需再应用旧的 ios-build-fixes.patch**。
 
 ```sh
-echo '89f59f0f1759c40ffc97ae089e7189441e806afe646f1956e2bef1f8c7616560  bear-source-final.tar.xz' | shasum -a 256 -c -
+echo '65a685ee80a91909816032bda5c7e3ec079774a4b142e99346b6677b2c8bd758  bear-source-final.tar.xz' | shasum -a 256 -c -
 tar -xf bear-source-final.tar.xz
 ```
 
@@ -39,11 +46,12 @@ Android 构建见解压后的 android/build.sh，需要 JDK 17、Android SDK 35 
 
 iOS 2.2.14 已完成 [云端构建](https://github.com/ZxMms/bear-baodian/actions/runs/44535364244)：11 项桥接检查、7 项 XCTest 和 Release 归档通过，产出用于 SideStore 自签的未签名 IPA。未签名文件不能直接安装到 iPhone，需要用户自己的 Apple 签名。
 
-本次源码包含风力界面和账单照片分享修复，但**尚未重新构建和交付包含本次更新的 iOS IPA**。仓库 Actions 保留手动触发、只读权限的构建流程，校验源码后在 macOS 上测试并构建，不会回写仓库。
+本次源码包含风力界面、账单照片分享修复和买金目标，但**尚未重新构建和交付包含本次更新的 iOS IPA**。仓库 Actions 保留手动触发、只读权限的构建流程，校验源码后在 macOS 上测试并构建，不会回写仓库。
 
 ## 数据与素材
 
 生活记录使用本机 SQLite，图片存于应用私有目录。源码不包含用户数据库、签名密钥或个人账号配置。
 
 本项目为非官方主题作品。第三方代码许可及一二布布素材来源见解压后的 licenses/、ASSET-SOURCES.md、AUDIO-SOURCES.md；公开源码不表示取得第三方角色或音频的商业授权。
+
 
